@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #34495e;
+    color: white;
+    padding: 15px 50px;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+header nav a:hover {
+    color: #3498db;
+}
+
+header nav .login-btn {
+    background-color: #e74c3c;
+    padding: 8px 15px;
+    border-radius: 6px;
+}
+
+header nav .login-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(to right, #2980b9, #6dd5fa);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.hero .btn {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero .btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-3px);
+}
+
+/* About & Contact Section */
+.about, .contact {
+    max-width: 900px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.about h2, .contact h2 {
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+/* Footer */
+footer {
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}

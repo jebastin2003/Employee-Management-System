@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+	<link rel="stylesheet" href="/addemstyle.css">
+
+</head>
+<body>
+    <h2>Add New Employee</h2>
+    <form id="addForm">
+        Name: <input type="text" id="name" required><br><br>
+        Email: <input type="email" id="email" required><br><br>
+        Department: <input type="text" id="department" required><br><br>
+		Date of Joining: <input type="date" id="date_of_joining" required><br><br>
+        Role: <input type="text" id="role" required><br><br>
+        Salary: <input type="number" id="salary" required><br><br>
+        <button type="submit">Add Employee</button>
+    </form>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+
+    <script>
+        document.getElementById("addForm").addEventListener("submit", function(e){
+            e.preventDefault();
+
+            const employee = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                department: document.getElementById("department").value,
+				dateOfJoining: document.getElementById("date_of_joining").value,
+                role: document.getElementById("role").value,
+                salary: parseFloat(document.getElementById("salary").value)
+            };
+
+            fetch("/api/employees/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(employee)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Employee added successfully with ID: " + data.id);
+                document.getElementById("addForm").reset();
+            })
+            .catch(error => alert("Error: " + error));
+        });
+    </script>
+</body>
+</html>

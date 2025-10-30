@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Active Employees</title>
+	<link rel="stylesheet" href="/activeemstyle.css">
+
+</head>
+<body>
+    <h2>Active Employees</h2>
+    <table border="1" id="employeeTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+
+    <script>
+        function loadEmployees() {
+            fetch("/api/employees/active")
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById("employeeTable");
+                // Clear old rows except header
+                table.innerHTML = `
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+						<th>Date Of Joining</th>
+                        <th>Role</th>
+                        <th>Salary</th>
+                        <th>Actions</th>
+                    </tr>`;
+                
+                data.forEach(emp => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = emp.id;
+                    row.insertCell(1).innerText = emp.name;
+                    row.insertCell(2).innerText = emp.email;
+                    row.insertCell(3).innerText = emp.department;
+					row.insertCell(4).innerText = emp.dateOfJoining;
+                    row.insertCell(5).innerText = emp.role;
+                    row.insertCell(6).innerText = emp.salary;
+                    row.insertCell(7).innerHTML = `
+                        <button onclick="removeEmployee(${emp.id})">Remove</button>
+                        <button onclick="updateEmployee(${emp.id})">Update</button>
+                    `;
+                });
+            });
+        }
+
+        function removeEmployee(id) {
+            if(confirm("Are you sure you want to remove this employee?")) {
+                fetch("/api/employees/remove/" + id, { method: "PUT" })
+                .then(() => loadEmployees());
+            }
+        }
+
+		function updateEmployee(id) {
+		    const row = Array.from(document.getElementById("employeeTable").rows)
+		                     .find(r => r.cells[0].innerText == id);
+
+		    const name = row.cells[1].innerText;
+		    const email = row.cells[2].innerText;
+		    const currentDepartment = row.cells[3].innerText;
+		    const currentJoiningDate = row.cells[4].innerText;
+		    const currentRole = row.cells[5].innerText;
+		    const currentSalary = row.cells[6].innerText;
+
+		    const salary = prompt("Enter new salary:", currentSalary);
+		    const role = prompt("Enter new role:", currentRole);
+		    const department = prompt("Enter new department:", currentDepartment);
+
+		    fetch("/api/employees/update", {
+		        method: "PUT",
+		        headers: { "Content-Type": "application/json" },
+		        body: JSON.stringify({
+		            id: id,
+		            name: name,
+		            email: email,
+		            salary: parseFloat(salary),
+		            role: role,
+		            department: department,
+		            dateOfJoining: currentJoiningDate
+		        })
+		    }).then(() => loadEmployees());
+		}
+
+
+
+        // Load table on page load
+        loadEmployees();
+    </script>
+</body>
+</html>

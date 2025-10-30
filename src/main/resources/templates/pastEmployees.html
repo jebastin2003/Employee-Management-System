@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Past Employees</title>
+    <link rel="stylesheet" href="/pastemstyle.css">
+    
+</head>
+<body>
+    <h2>Past Employees (Resigned)</h2>
+    <table border="1" id="pastTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Salary</th>
+            <th>Date of Joining</th>
+            <th>Date of Exit</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+
+    <script>
+        function loadPastEmployees() {
+            fetch("/api/employees/past")
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById("pastTable");
+                table.innerHTML = `
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Role</th>
+                        <th>Salary</th>
+                        <th>Date of Joining</th>
+                        <th>Date of Exit</th>
+                        <th>Actions</th>
+                    </tr>`;
+                
+                data.forEach(emp => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = emp.id;
+                    row.insertCell(1).innerText = emp.name;
+                    row.insertCell(2).innerText = emp.email;
+                    row.insertCell(3).innerText = emp.department;
+                    row.insertCell(4).innerText = emp.role;
+                    row.insertCell(5).innerText = emp.salary;
+                    row.insertCell(6).innerText = emp.dateOfJoining;
+                    row.insertCell(7).innerText = emp.dateOfExit;
+                    row.insertCell(8).innerHTML = `
+                        <button onclick="deleteEmployee(${emp.id})">Delete</button>
+                    `;
+                });
+            });
+        }
+
+        function deleteEmployee(id) {
+            if(confirm("Permanently delete this employee?")) {
+                fetch("/api/employees/delete/" + id, { method: "DELETE" })
+                .then(() => loadPastEmployees());
+            }
+        }
+
+        loadPastEmployees();
+    </script>
+</body>
+</html>
